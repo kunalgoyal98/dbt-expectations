@@ -1,0 +1,68 @@
+{
+  "default__test_expect_column_most_common_value_to_be_in_set" : {
+    "name" : "default__test_expect_column_most_common_value_to_be_in_set",
+    "macroType" : "query",
+    "definition" : "\n\nwith value_counts as (\n\n    select\n        {% if quote_values %}\n        {{ column_name }}\n        {% else %}\n        cast({{ column_name }} as {{ data_type }})\n        {% endif %} as value_field,\n        count(*) as value_count\n\n    from {{ model }}\n    {% if row_condition %}\n    where {{ row_condition }}\n    {% endif %}\n\n    group by {% if quote_values %}\n                {{ column_name }}\n            {% else %}\n                cast({{ column_name }} as {{ data_type }})\n            {% endif %}\n\n),\nvalue_counts_ranked as (\n\n    select\n        *,\n        row_number() over(order by value_count desc) as value_count_rank\n    from\n        value_counts\n\n),\nvalue_count_top_n as (\n\n    select\n        value_field\n    from\n        value_counts_ranked\n    where\n        value_count_rank = {{ top_n }}\n\n),\nset_values as (\n\n    {% for value in value_set %}\n    select\n        {% if quote_values %}\n        '{{ value }}'\n        {% else %}\n        cast({{ value }} as {{ data_type }})\n        {% endif %} as value_field\n    {% if not loop.last union%} all{% endif %}\n    {% endfor %}\n\n),\nunique_set_values as (\n\n    select distinct value_field\n    from\n        set_values\n\n),\nvalidation_errors as (\n    \n    select\n        value_field\n    from\n        value_count_top_n\n    where\n        value_field not in (select value_field from unique_set_values)\n\n)\n\nselect *\nfrom validation_errors",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "model",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "column_name",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "value_set",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "top_n",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "quote_values",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "data_type",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "row_condition",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

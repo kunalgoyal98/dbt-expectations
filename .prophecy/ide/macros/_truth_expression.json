@@ -1,0 +1,38 @@
+{
+  "truth_expression" : {
+    "name" : "truth_expression",
+    "macroType" : "query",
+    "definition" : "{{ adapter.dispatch('truth_expression', 'dbt_expectations')(expression) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "expression",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "default__truth_expression" : {
+    "name" : "default__truth_expression",
+    "macroType" : "expression",
+    "definition" : "{{expression}} AS expression",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "expression",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

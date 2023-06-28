@@ -1,0 +1,60 @@
+{
+  "default__test_expect_grouped_row_values_to_have_recent_data" : {
+    "name" : "default__test_expect_grouped_row_values_to_have_recent_data",
+    "macroType" : "query",
+    "definition" : "\nwith latest_grouped_timestamps as (\n\n    select\n        {{ group_by | join(\",\") ~ \",\" if group_by }}\n        max(1) as join_key,\n        max(cast({{ timestamp_column }} as {{ dbt_expectations.type_timestamp() }})) as latest_timestamp_column\n    from\n        {{ model }}\n    where\n        \n        cast({{ timestamp_column }} as {{ dbt_expectations.type_timestamp() }}) <= {{ dbt_date.now() }}\n        {% if row_condition %}\n        and {{ row_condition }}\n        {% endif %}\n\n    {% if group_by %}\n    {{  dbt_expectations.group_by(group_by | length) }}\n    {% endif %}\n),\ntotal_row_counts as (\n\n    select\n        {{ group_by | join(\",\") ~ \",\" if group_by }}\n        max(1) as join_key,\n        count(*) as row_count\n    from\n        latest_grouped_timestamps\n    {% if group_by %}\n    {{  dbt_expectations.group_by(group_by | length) }}\n    {% endif %}\n\n\n),\noutdated_grouped_timestamps as (\n\n    select *\n    from\n        latest_grouped_timestamps\n    where\n        \n        latest_timestamp_column <\n            cast(\n                {{ dbt.dateadd(datepart, interval * -1, dbt_date.now()) }}\n                as {{ dbt_expectations.type_timestamp() }}\n            )\n\n),\nvalidation_errors as (\n\n    select\n        r.row_count,\n        t.*\n    from\n        total_row_counts r\n        left join\n        outdated_grouped_timestamps t\n        on\n            {% for g in group_by %}\n            r.{{ g }} = t.{{ g }} and\n            {% endfor %}\n            r.join_key = t.join_key\n    where\n        \n        \n        r.row_count = 0\n        or\n        t.join_key is not null\n\n)\nselect * from validation_errors",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "model",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "group_by",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "timestamp_column",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "datepart",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "interval",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "row_condition",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

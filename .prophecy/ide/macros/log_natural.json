@@ -1,0 +1,74 @@
+{
+  "log_natural" : {
+    "name" : "log_natural",
+    "macroType" : "query",
+    "definition" : "{{ adapter.dispatch('log_natural', 'dbt_expectations')(x) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "x",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "default__log_natural" : {
+    "name" : "default__log_natural",
+    "macroType" : "expression",
+    "definition" : "ln({{x}})",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "x",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "bigquery__log_natural" : {
+    "name" : "bigquery__log_natural",
+    "macroType" : "expression",
+    "definition" : "ln({{x}})",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "x",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "snowflake__log_natural" : {
+    "name" : "snowflake__log_natural",
+    "macroType" : "expression",
+    "definition" : "ln({{x}})",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "x",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

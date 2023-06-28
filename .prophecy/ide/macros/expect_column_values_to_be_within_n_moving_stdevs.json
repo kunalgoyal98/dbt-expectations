@@ -1,0 +1,142 @@
+{
+  "_get_metric_expression" : {
+    "name" : "_get_metric_expression",
+    "macroType" : "expression",
+    "definition" : "{% if take_logs %}\n  {% set expr = \"nullif(\" ~ metric_column ~ \", 0)\" %}\n   \n  coalesce({{ dbt_expectations.log_natural(expr) }}, 0)\n{% else %}\n  coalesce({{metric_column}}, 0)\n{% endif %} ",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "metric_column",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "take_logs",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "default__test_expect_column_values_to_be_within_n_moving_stdevs" : {
+    "name" : "default__test_expect_column_values_to_be_within_n_moving_stdevs",
+    "macroType" : "query",
+    "definition" : "\n\n{% set sigma_threshold_upper = sigma_threshold_upper if sigma_threshold_upper else sigma_threshold %}\n{% set sigma_threshold_lower = sigma_threshold_lower if sigma_threshold_lower else -1 * sigma_threshold %}\n{% set partition_by = \"partition by \" ~ (group_by | join(\",\")) if group_by %}\n{% set group_by_length = (group_by | length ) if group_by else 0 %}\n\nwith metric_values as (\n\n    with grouped_metric_values as (\n\n        select\n            {{ dbt.date_trunc(period, date_column_name) }} as metric_period,\n            {{ group_by | join(\",\") ~ \",\" if group_by }}\n            sum({{ column_name }}) as agg_metric_value\n        from\n            {{ model }}\n        {{  dbt_expectations.group_by(1 + group_by_length) }}\n\n    )\n    {% if take_diffs %}\n    , grouped_metric_values_with_priors as (\n\n        select\n            *,\n            lag(agg_metric_value, {{ lookback_periods }}) over(\n                {{ partition_by }}\n                order by metric_period) as prior_agg_metric_value\n    from\n        grouped_metric_values d\n\n    )\n    select\n        *,\n        {{ dbt_expectations._get_metric_expression(\"agg_metric_value\", take_logs) }}\n        -\n        {{ dbt_expectations._get_metric_expression(\"prior_agg_metric_value\", take_logs) }}\n        as metric_test_value\n    from\n        grouped_metric_values_with_priors d\n\n    {% else %}\n\n    select\n        *,\n        {{ dbt_expectations._get_metric_expression(\"agg_metric_value\", take_logs) }}\n        as metric_test_value\n    from\n        grouped_metric_values\n\n    {% endif %}\n\n),\nmetric_moving_calcs as (\n\n    select\n        *,\n        avg(metric_test_value)\n            over({{ partition_by }}\n                    order by metric_period rows\n                    between {{ trend_periods }} preceding and 1 preceding) as metric_test_rolling_average,\n        stddev(metric_test_value)\n            over({{ partition_by }}\n                    order by metric_period rows\n                    between {{ trend_periods }} preceding and 1 preceding) as metric_test_rolling_stddev\n    from\n        metric_values\n\n),\nmetric_sigma as (\n\n    select\n        *,\n        (metric_test_value - metric_test_rolling_average) as metric_test_delta,\n        (metric_test_value - metric_test_rolling_average)/\n            nullif(metric_test_rolling_stddev, 0) as metric_test_sigma\n    from\n        metric_moving_calcs\n\n)\nselect\n    *\nfrom\n    metric_sigma\nwhere\n\n    metric_period >= cast(\n            {{ dbt.dateadd(period, -test_periods, dbt.date_trunc(period, dbt_date.now())) }}\n            as {{ dbt_expectations.type_timestamp() }})\n    and\n    metric_period < {{ dbt.date_trunc(period, dbt_date.now()) }}\n    and\n\n    not (\n        metric_test_sigma >= {{ sigma_threshold_lower }} and\n        metric_test_sigma <= {{ sigma_threshold_upper }}\n    )",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "model",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "column_name",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "date_column_name",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "group_by",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "period",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "lookback_periods",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "trend_periods",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "test_periods",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "sigma_threshold",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "sigma_threshold_upper",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "sigma_threshold_lower",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "take_diffs",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "take_logs",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

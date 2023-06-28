@@ -1,0 +1,68 @@
+{
+  "expression_between" : {
+    "name" : "expression_between",
+    "macroType" : "query",
+    "definition" : "\n\n{% if min_value is none and max_value is none %}\n{{ exceptions.raise_compiler_error(\n    \"You have to provide either a min_value, max_value or both.\"\n) }}\n{% endif %}\n\n{% set strict_operator = \"\" if strictly else \"=\" %}\n\n{% set expression_min_max %}\n( 1=1\n{% if min_value is not none %} and {{ expression | trim }} >{{ strict_operator }} {{ min_value }}{% endif %}\n{% if max_value is not none %} and {{ expression | trim }} <{{ strict_operator }} {{ max_value }}{% endif %}\n)\n{% endset %}\n\n{{ dbt_expectations.expression_is_true(model,\n                                        expression=expression_min_max,\n                                        group_by_columns=group_by_columns,\n                                        row_condition=row_condition)\n                                        }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "model",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "expression",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "min_value",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "max_value",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "group_by_columns",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "row_condition",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "strictly",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

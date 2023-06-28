@@ -1,0 +1,398 @@
+{
+  "_validate_flags" : {
+    "name" : "_validate_flags",
+    "macroType" : "expression",
+    "definition" : "{% for flag in flags %}\n  {% if flag not in alphabet %}\n    {#Using raise_compiler_error causes disabled tests with invalid flags to fail compilation#}\n    {{ exceptions.warn(\"flag \" ~ flag ~ \" not in list of allowed flags for this adapter: \" ~ alphabet | join(\", \")) }}\n  {% endif %} \n{% if not loop.last %} , {% endif %}\n{% endfor %}\n ",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "flags",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "alphabet",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "regexp_instr" : {
+    "name" : "regexp_instr",
+    "macroType" : "query",
+    "definition" : "{{ adapter.dispatch('regexp_instr', 'dbt_expectations')(source_value, regexp, position, occurrence, is_raw, flags) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "source_value",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "regexp",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "position",
+        "kind" : {
+          "type" : "value",
+          "value" : "1"
+        },
+        "optional" : true,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "occurrence",
+        "kind" : {
+          "type" : "value",
+          "value" : "1"
+        },
+        "optional" : true,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "is_raw",
+        "kind" : {
+          "type" : "value",
+          "value" : "False"
+        },
+        "optional" : true,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "flags",
+        "kind" : {
+          "type" : "value",
+          "value" : "\"\""
+        },
+        "optional" : true,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "postgres__regexp_instr" : {
+    "name" : "postgres__regexp_instr",
+    "macroType" : "expression",
+    "definition" : "{% if flags %}\n  {{ dbt_expectations._validate_flags(flags, 'bcegimnpqstwx') }}\n{% endif %} \ncoalesce(array_length((\n  SELECT regexp_matches({{source_value}}, '{{ regexp }}', '{{ flags }}')\n ), 1), 0)",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "source_value",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "regexp",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "position",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "occurrence",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "is_raw",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "flags",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "_validate_re2_flags" : {
+    "name" : "_validate_re2_flags",
+    "macroType" : "expression",
+    "definition" : "{#Re2 supports following flags:#}\n{#i  :  case-insensitive (default fault)#}\n{#m  :  multi-line mode: ^ and $ match begin/end line in addition to begin/end text (default false)#}\n{#s  :  let . match \\n (default false)#}\n{#U  :  ungreedy: swap meaning of x* and x*?, x+ and x+?, etc (default false)#}\n{#Flag syntax is xyz (set) or -xyz (clear) or xy-z (set xy, clear z).#}\n{#Regex explanation: do not allow consecutive dashes, accept all re2 flags and clear operator, do not end with a dash#}\n{% set re2_flags_pattern = '^(?!.*--)[-imsU]*(?<!-)$' %}\n \n{% set re = modules.re %}\n \n{% set is_match = re.match(re2_flags_pattern, flags) %}\n \n{% if not is_match %}\n  {#Using raise_compiler_error causes disabled tests with invalid flags to fail compilation#}\n  {{ exceptions.warn(\"flags \" ~ flags ~ \" isn't a valid re2 flag pattern\") }}\n{% endif %} \n",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "flags",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "default__regexp_instr" : {
+    "name" : "default__regexp_instr",
+    "macroType" : "expression",
+    "definition" : "{#unclear if other databases support raw strings or flags#}\n{% if is_raw or flags %}\n  {{ exceptions.warn(\"is_raw and flags options are not supported for this adapter \" ~ \"and are being ignored.\") }}\n{% endif %} \nregexp_instr({{source_value}}, '{{ regexp }}', {{position}}, {{occurrence}})",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "source_value",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "regexp",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "position",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "occurrence",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "is_raw",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "flags",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "bigquery__regexp_instr" : {
+    "name" : "bigquery__regexp_instr",
+    "macroType" : "query",
+    "definition" : "\n{% if flags %}\n    {{ dbt_expectations._validate_re2_flags(flags) }}\n    \n    {% set regexp = \"(?\" ~ flags ~ \")\" ~ regexp %}\n{% endif %}\n{% set regexp = \"r'\" ~ regexp ~ \"'\" if is_raw else \"'\" ~ regexp ~ \"'\" %}\nregexp_instr({{ source_value }}, {{ regexp }}, {{ position }}, {{ occurrence }})",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "source_value",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "regexp",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "position",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "occurrence",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "is_raw",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "flags",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "snowflake__regexp_instr" : {
+    "name" : "snowflake__regexp_instr",
+    "macroType" : "query",
+    "definition" : "\n{% set regexp = \"$$\" ~ regexp ~ \"$$\" if is_raw else \"'\" ~ regexp ~ \"'\" %}\n{% if flags %}{{ dbt_expectations._validate_flags(flags, 'cimes') }}{% endif %}\nregexp_instr({{ source_value }}, {{ regexp }}, {{ position }}, {{ occurrence }}, 0, '{{ flags }}')",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "source_value",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "regexp",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "position",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "occurrence",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "is_raw",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "flags",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "redshift__regexp_instr" : {
+    "name" : "redshift__regexp_instr",
+    "macroType" : "expression",
+    "definition" : "{% if flags %}\n  {{ dbt_expectations._validate_flags(flags, 'ciep') }}\n{% endif %} \nregexp_instr({{source_value}}, '{{ regexp }}', {{position}}, {{occurrence}}, 0, '{{ flags }}')",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "source_value",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "regexp",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "position",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "occurrence",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "is_raw",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "flags",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

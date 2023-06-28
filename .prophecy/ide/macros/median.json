@@ -1,0 +1,20 @@
+{
+  "median" : {
+    "name" : "median",
+    "macroType" : "expression",
+    "definition" : "{{ dbt_expectations.percentile_cont(field, 0.5) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "field",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

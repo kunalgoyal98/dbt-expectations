@@ -1,0 +1,498 @@
+name: dbt_expectations
+description: ''
+version: 0.0.1
+author: null
+language: sql
+buildSystem: ''
+buildSystemDetails: null
+pipelines: {}
+datasets: {}
+templates: {}
+jobs: {}
+functions:
+  author: null
+  createdAt: '2023-06-28 12:20:01'
+  gems: {}
+  udfs: {}
+  udafs: {}
+  expressions: {}
+subgraphs: {}
+sqlModels: {}
+sqlMacros:
+  .prophecy/metadata/sqlmacros/default__test_expect_column_values_to_be_within_n_stdevs:
+    name: default__test_expect_column_values_to_be_within_n_stdevs
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/distributional/expect_column_values_to_be_within_n_stdevs.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/postgres__rand:
+    name: postgres__rand
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/rand.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_expect_row_values_to_have_recent_data:
+    name: default__test_expect_row_values_to_have_recent_data
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/table_shape/expect_row_values_to_have_recent_data.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_expect_select_column_values_to_be_unique_within_record:
+    name: default__test_expect_select_column_values_to_be_unique_within_record
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/multi-column/expect_select_column_values_to_be_unique_within_record.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/_get_column_list:
+    name: _get_column_list
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/table_shape/_get_column_list.sql
+    - .prophecy/ide/macros/_get_column_list.json
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_expect_column_most_common_value_to_be_in_set:
+    name: default__test_expect_column_most_common_value_to_be_in_set
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/aggregate_functions/expect_column_most_common_value_to_be_in_set.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/median:
+    name: median
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/median.sql
+    - .prophecy/ide/macros/median.json
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/type_timestamp:
+    name: type_timestamp
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/utils/datatypes.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/bigquery__regexp_instr:
+    name: bigquery__regexp_instr
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/regex/regexp_instr.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_expect_table_row_count_to_equal_other_table:
+    name: default__test_expect_table_row_count_to_equal_other_table
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/table_shape/expect_table_row_count_to_equal_other_table.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/postgres__regexp_instr:
+    name: postgres__regexp_instr
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/regex/regexp_instr.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__truth_expression:
+    name: default__truth_expression
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/_generalized/_truth_expression.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/redshift__regexp_instr:
+    name: redshift__regexp_instr
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/regex/regexp_instr.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/postgres__type_datetime:
+    name: postgres__type_datetime
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/utils/datatypes.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/bigquery__rand:
+    name: bigquery__rand
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/rand.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_expect_table_row_count_to_be_between:
+    name: default__test_expect_table_row_count_to_be_between
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/table_shape/expect_table_row_count_to_be_between.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/ignore_row_if_expression:
+    name: ignore_row_if_expression
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/_generalized/_ignore_row_if_expression.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/regexp_instr:
+    name: regexp_instr
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/regex/regexp_instr.sql
+    - .prophecy/ide/macros/regexp_instr.json
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__group_by:
+    name: default__group_by
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/utils/groupby.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/snowflake__type_timestamp:
+    name: snowflake__type_timestamp
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/utils/datatypes.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_equal_expression:
+    name: default__test_equal_expression
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/_generalized/equal_expression.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__ignore_row_if_expression:
+    name: default__ignore_row_if_expression
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/_generalized/_ignore_row_if_expression.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/snowflake__log_natural:
+    name: snowflake__log_natural
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/log_natural.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_expect_grouped_row_values_to_have_recent_data:
+    name: default__test_expect_grouped_row_values_to_have_recent_data
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/table_shape/expect_grouped_row_values_to_have_recent_data.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_expect_column_values_to_be_within_n_moving_stdevs:
+    name: default__test_expect_column_values_to_be_within_n_moving_stdevs
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/distributional/expect_column_values_to_be_within_n_moving_stdevs.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__regexp_instr:
+    name: default__regexp_instr
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/regex/regexp_instr.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/group_by:
+    name: group_by
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/utils/groupby.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/redshift__rand:
+    name: redshift__rand
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/rand.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__quantile:
+    name: default__quantile
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/percentile_cont.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/log_natural:
+    name: log_natural
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/log_natural.sql
+    - .prophecy/ide/macros/log_natural.json
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/_validate_flags:
+    name: _validate_flags
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/regex/regexp_instr.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/_get_like_pattern_expression:
+    name: _get_like_pattern_expression
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/string_matching/_get_like_pattern_expression.sql
+    - .prophecy/ide/macros/_get_like_pattern_expression.json
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/bigquery__log_natural:
+    name: bigquery__log_natural
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/log_natural.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__log_natural:
+    name: default__log_natural
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/log_natural.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_expect_column_stdev_to_be_between:
+    name: default__test_expect_column_stdev_to_be_between
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/aggregate_functions/expect_column_stdev_to_be_between.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/truth_expression:
+    name: truth_expression
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/_generalized/_truth_expression.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/postgres__type_timestamp:
+    name: postgres__type_timestamp
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/utils/datatypes.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/rand:
+    name: rand
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/rand.sql
+    - .prophecy/ide/macros/rand.json
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/expression_is_true:
+    name: expression_is_true
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/_generalized/expression_is_true.sql
+    - .prophecy/ide/macros/expression_is_true.json
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/snowflake__regexp_instr:
+    name: snowflake__regexp_instr
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/regex/regexp_instr.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__expression_is_true:
+    name: default__expression_is_true
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/_generalized/expression_is_true.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/_get_metric_expression:
+    name: _get_metric_expression
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/distributional/expect_column_values_to_be_within_n_moving_stdevs.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__rand:
+    name: default__rand
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/rand.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/expression_between:
+    name: expression_between
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/_generalized/expression_between.sql
+    - .prophecy/ide/macros/expression_between.json
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__type_datetime:
+    name: default__type_datetime
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/utils/datatypes.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/type_datetime:
+    name: type_datetime
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/utils/datatypes.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/snowflake__type_datetime:
+    name: snowflake__type_datetime
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/utils/datatypes.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/bigquery__quantile:
+    name: bigquery__quantile
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/percentile_cont.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/snowflake__rand:
+    name: snowflake__rand
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/rand.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__type_timestamp:
+    name: default__type_timestamp
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/utils/datatypes.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/_validate_re2_flags:
+    name: _validate_re2_flags
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/regex/regexp_instr.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/percentile_cont:
+    name: percentile_cont
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/math/percentile_cont.sql
+    - .prophecy/ide/macros/percentile_cont.json
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_expect_table_row_count_to_equal_other_table_times_factor:
+    name: default__test_expect_table_row_count_to_equal_other_table_times_factor
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/table_shape/expect_table_row_count_to_equal_other_table_times_factor.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/_list_intersect:
+    name: _list_intersect
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/table_shape/_list_intersect.sql
+    - .prophecy/ide/macros/_list_intersect.json
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__test_expect_table_row_count_to_equal:
+    name: default__test_expect_table_row_count_to_equal
+    macroType: expression
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/table_shape/expect_table_row_count_to_equal.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/default__get_select:
+    name: default__get_select
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/_generalized/equal_expression.sql
+    createdAt: '2023-06-28 12:20:03'
+  .prophecy/metadata/sqlmacros/get_select:
+    name: get_select
+    macroType: query
+    description: null
+    author: kunalg@prophecy.io
+    files:
+    - macros/schema_tests/_generalized/equal_expression.sql
+    createdAt: '2023-06-28 12:20:03'
+sqlSeeds: {}
+sqlSources: {}
+sqlUnreferencedSources: {}
+sqlPipeline:
+  name: sqlPipeline
+  description: null
+  author: kunalg@prophecy.io
+  createdAt: '2023-06-28 12:20:01'
+dependencies: '[]'
+projectDependencies: {}
+pipelineConfigurations: {}

@@ -1,0 +1,38 @@
+{
+  "group_by" : {
+    "name" : "group_by",
+    "macroType" : "query",
+    "definition" : "{{ return(adapter.dispatch('group_by', 'dbt_expectations')(n)) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "n",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "default__group_by" : {
+    "name" : "default__group_by",
+    "macroType" : "query",
+    "definition" : "\n\n  group by {% for i in range(1, n + 1) %}\n      {{ i }}{{ ',' if not loop.last }}\n   {% endfor %}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "n",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

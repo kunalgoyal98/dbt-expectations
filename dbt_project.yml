@@ -1,14 +1,22 @@
-
-# Name your project! Project names should contain only lowercase characters
-# and underscores. A good package name should reflect your organization's
-# name or the intended use of these models
-name: 'dbt_expectations'
-version: '0.6.0'
-
-require-dbt-version: [">=1.2.0", "<2.0.0"]
+# ==================
+# Project Details
+# ==================
+name: "dbt_expectations"
 config-version: 2
+require-dbt-version:
+- ">=1.2.0"
+- "<2.0.0"
+version: "0.6.0"
 
-target-path: "target"
-clean-targets: ["target", "dbt_packages"]
-macro-paths: ["macros"]
+# ==================
+# File Path Configs
+# ==================
+clean-targets:
+- "target"
+- "dbt_packages"
+model-paths:
+- "prophecy-sources"
 log-path: "logs"
+macro-paths:
+- "macros"
+target-path: "target"

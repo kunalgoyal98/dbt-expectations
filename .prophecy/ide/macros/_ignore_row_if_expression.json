@@ -1,0 +1,54 @@
+{
+  "ignore_row_if_expression" : {
+    "name" : "ignore_row_if_expression",
+    "macroType" : "query",
+    "definition" : "{{ adapter.dispatch('ignore_row_if_expression', 'dbt_expectations')(ignore_row_if, columns) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "ignore_row_if",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "columns",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "default__ignore_row_if_expression" : {
+    "name" : "default__ignore_row_if_expression",
+    "macroType" : "query",
+    "definition" : "\n  {% set ignore_row_if_values = [\"all_values_are_missing\", \"any_value_is_missing\"] %}\n    {% if ignore_row_if not in ignore_row_if_values %}\n        {{ exceptions.raise_compiler_error(\n            \"`ignore_row_if` must be one of \" ~ (ignore_row_if_values | join(\", \")) ~ \". Got: '\" ~ ignore_row_if ~\"'.'\"\n        ) }}\n    {% endif %}\n\n    {% set op = \"and\" if ignore_row_if == \"all_values_are_missing\" else \"or\" %}\n    not (\n        {% for column in columns %}\n        {{ column }} is null{% if not loop.last %} {{ op }} {% endif %}\n        {% endfor %}\n    )",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "ignore_row_if",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "columns",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

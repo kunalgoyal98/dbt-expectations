@@ -1,0 +1,105 @@
+{
+  "expression_is_true" : {
+    "name" : "expression_is_true",
+    "macroType" : "query",
+    "definition" : "{{ adapter.dispatch('expression_is_true', 'dbt_expectations')(model, expression, test_condition, group_by_columns, row_condition) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "model",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "expression",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "test_condition",
+        "kind" : {
+          "type" : "value",
+          "value" : "\"= true\""
+        },
+        "optional" : true,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "group_by_columns",
+        "kind" : {
+          "type" : "value",
+          "value" : "None"
+        },
+        "optional" : true,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "row_condition",
+        "kind" : {
+          "type" : "value",
+          "value" : "None"
+        },
+        "optional" : true,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "default__expression_is_true" : {
+    "name" : "default__expression_is_true",
+    "macroType" : "query",
+    "definition" : "\nwith grouped_expression as (\n    select\n        {% if group_by_columns %}\n        {% for group_by_column in group_by_columns %}\n        {{ group_by_column }} as col_{{ loop.index }},\n        {% endfor %}\n        {% endif %}\n        {{ dbt_expectations.truth_expression(expression) }}\n    from {{ model }}\n     {% if row_condition %}\n    where\n        {{ row_condition }}\n    {% endif %}\n    {% if group_by_columns %}\n    group by\n    {% for group_by_column in group_by_columns %}\n        {{ group_by_column }}{% if not loop.last %},{% endif %}\n    {% endfor %}\n    {% endif %}\n\n),\nvalidation_errors as (\n\n    select\n        *\n    from\n        grouped_expression\n    where\n        not(expression {{ test_condition }})\n\n)\n\nselect *\nfrom validation_errors",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "model",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "expression",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "test_condition",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "group_by_columns",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "row_condition",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

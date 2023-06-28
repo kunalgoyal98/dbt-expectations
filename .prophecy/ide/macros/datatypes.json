@@ -1,0 +1,82 @@
+{
+  "default__type_datetime" : {
+    "name" : "default__type_datetime",
+    "macroType" : "expression",
+    "definition" : "DATETIME",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "type_timestamp" : {
+    "name" : "type_timestamp",
+    "macroType" : "query",
+    "definition" : "{{ return(adapter.dispatch('type_timestamp', 'dbt_expectations')()) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "default__type_timestamp" : {
+    "name" : "default__type_timestamp",
+    "macroType" : "expression",
+    "definition" : "TIMESTAMP",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "postgres__type_datetime" : {
+    "name" : "postgres__type_datetime",
+    "macroType" : "query",
+    "definition" : "\n    timestamp without time zone",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "type_datetime" : {
+    "name" : "type_datetime",
+    "macroType" : "query",
+    "definition" : "{{ return(adapter.dispatch('type_datetime', 'dbt_expectations')()) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "snowflake__type_datetime" : {
+    "name" : "snowflake__type_datetime",
+    "macroType" : "expression",
+    "definition" : "timestamp_ntz",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "postgres__type_timestamp" : {
+    "name" : "postgres__type_timestamp",
+    "macroType" : "query",
+    "definition" : "\n    timestamp without time zone",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "snowflake__type_timestamp" : {
+    "name" : "snowflake__type_timestamp",
+    "macroType" : "expression",
+    "definition" : "timestamp_ntz",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  }
+}

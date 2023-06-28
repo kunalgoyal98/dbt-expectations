@@ -1,0 +1,52 @@
+{
+  "default__test_expect_row_values_to_have_recent_data" : {
+    "name" : "default__test_expect_row_values_to_have_recent_data",
+    "macroType" : "query",
+    "definition" : "\n{% set default_start_date = '1970-01-01' %}\nwith max_recency as (\n\n    select max(cast({{ column_name }} as {{ dbt_expectations.type_timestamp() }})) as max_timestamp\n    from\n        {{ model }}\n    where\n        \n        cast({{ column_name }} as {{ dbt_expectations.type_timestamp() }}) <= {{ dbt_date.now() }}\n        {% if row_condition %}\n        and {{ row_condition }}\n        {% endif %}\n)\nselect\n    *\nfrom\n    max_recency\nwhere\n    \n    \n    coalesce(max_timestamp, cast('{{ default_start_date }}' as {{ dbt_expectations.type_timestamp() }}))\n        <\n        cast({{ dbt.dateadd(datepart, interval * -1, dbt_date.now()) }} as {{ dbt_expectations.type_timestamp() }})",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "model",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "column_name",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "datepart",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "interval",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "row_condition",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

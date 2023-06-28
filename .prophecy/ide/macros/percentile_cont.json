@@ -1,0 +1,105 @@
+{
+  "percentile_cont" : {
+    "name" : "percentile_cont",
+    "macroType" : "query",
+    "definition" : "{{ adapter.dispatch('quantile', 'dbt_expectations')(field, quantile, partition) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "field",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "quantile",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "partition",
+        "kind" : {
+          "type" : "value",
+          "value" : "None"
+        },
+        "optional" : true,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "default__quantile" : {
+    "name" : "default__quantile",
+    "macroType" : "query",
+    "definition" : "\n    percentile_cont({{ quantile }}) within group (order by {{ field }})\n    {% if partition over%}(partition by {{ partition }}){% endif %}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "field",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "quantile",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "partition",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "bigquery__quantile" : {
+    "name" : "bigquery__quantile",
+    "macroType" : "query",
+    "definition" : "\n    percentile_cont({{ field }}, {{ quantile }})\n    over({% if partition partition%} by {{ partition }}{% endif %})",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "field",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "quantile",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "partition",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

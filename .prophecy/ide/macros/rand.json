@@ -1,0 +1,70 @@
+{
+  "postgres__rand" : {
+    "name" : "postgres__rand",
+    "macroType" : "expression",
+    "definition" : "random()",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "snowflake__rand" : {
+    "name" : "snowflake__rand",
+    "macroType" : "expression",
+    "definition" : "uniform(0::FLOAT, 1::FLOAT, random())",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "seed",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  },
+  "default__rand" : {
+    "name" : "default__rand",
+    "macroType" : "expression",
+    "definition" : "rand()",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "rand" : {
+    "name" : "rand",
+    "macroType" : "query",
+    "definition" : "{{ adapter.dispatch('rand', 'dbt_expectations')() }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "redshift__rand" : {
+    "name" : "redshift__rand",
+    "macroType" : "expression",
+    "definition" : "random()",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  },
+  "bigquery__rand" : {
+    "name" : "bigquery__rand",
+    "macroType" : "expression",
+    "definition" : "rand()",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ ]
+    },
+    "staleState" : "none"
+  }
+}

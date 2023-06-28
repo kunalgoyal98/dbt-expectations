@@ -1,0 +1,44 @@
+{
+  "default__test_expect_table_row_count_to_equal" : {
+    "name" : "default__test_expect_table_row_count_to_equal",
+    "macroType" : "expression",
+    "definition" : "{% set expression %}\n  count(*) = {{value}}\n{% endset %}\n \n{{ dbt_expectations.expression_is_true(model, expression = expression, group_by_columns = group_by, row_condition = row_condition) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "model",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "value",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "group_by",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "row_condition",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

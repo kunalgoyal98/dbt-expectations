@@ -1,0 +1,28 @@
+{
+  "_list_intersect" : {
+    "name" : "_list_intersect",
+    "macroType" : "expression",
+    "definition" : "{% set matching_items = [] %}\n \n{% for itm in list1 %}\n  {% if itm in list2 %}\n    {% do matching_items.append(itm) %}\n     \n  {% endif %} \n{% if not loop.last %} , {% endif %}\n{% endfor %}\n \n{% do return(matching_items) %}\n \n",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "list1",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "list2",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

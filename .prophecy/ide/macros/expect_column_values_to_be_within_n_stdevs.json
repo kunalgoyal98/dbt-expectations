@@ -1,0 +1,44 @@
+{
+  "default__test_expect_column_values_to_be_within_n_stdevs" : {
+    "name" : "default__test_expect_column_values_to_be_within_n_stdevs",
+    "macroType" : "query",
+    "definition" : "\n\nwith metric_values as (\n\n    select\n        {{ group_by | join(\",\") ~ \",\" if group_by }}\n        sum({{ column_name }}) as {{ column_name }}\n    from\n        {{ model }}\n    {% if group_by %}\n    {{  dbt_expectations.group_by(group_by | length) }}\n    {% endif %}\n\n),\nmetric_values_with_statistics as (\n\n    select\n        *,\n        avg({{ column_name }}) over() as {{ column_name }}_average,\n        stddev({{ column_name }}) over() as {{ column_name }}_stddev\n    from\n        metric_values\n\n),\nmetric_values_z_scores as (\n\n    select\n        *,\n        ({{ column_name }} - {{ column_name }}_average)/\n            nullif({{ column_name }}_stddev, 0) as {{ column_name }}_sigma\n    from\n        metric_values_with_statistics\n\n)\nselect\n    *\nfrom\n    metric_values_z_scores\nwhere\n    abs({{ column_name }}_sigma) > {{ sigma_threshold }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "model",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "column_name",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "group_by",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "sigma_threshold",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}

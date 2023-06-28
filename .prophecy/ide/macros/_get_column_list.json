@@ -1,0 +1,29 @@
+{
+  "_get_column_list" : {
+    "name" : "_get_column_list",
+    "macroType" : "expression",
+    "definition" : "{% set relation_columns = adapter.get_columns_in_relation(model) %}\n \n{% set relation_column_names = relation_columns | map(attribute = \"name\") | map(transform) | list %}\n \n{% do return(relation_column_names) %}\n \n",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "model",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "transform",
+        "kind" : {
+          "type" : "value",
+          "value" : "\"upper\""
+        },
+        "optional" : true,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none"
+  }
+}
